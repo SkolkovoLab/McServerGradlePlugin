@@ -1,0 +1,45 @@
+[versions]
+
+# main
+kotlin = "2.3.0"
+kotlinx-coroutines = "1.10.2"
+ksp = "2.3.4"
+micronaut = "4.10.3"
+micronaut-plugin = "4.6.1"
+shadow = "9.3.0"
+slf4j = "2.0.17"
+
+# minecraft
+cloud = "2.0.0"
+paperweight = "2.0.0-beta.19"
+plugin-yml = "0.8.0"
+# Дефолтная версия Paper dev-bundle (paperweight). Переопределяется через
+# minecraftServer { paperVersion = "..." } в модуле-потребителе.
+paper = "1.21.11-R0.1-SNAPSHOT"
+
+# tooling
+snakeyaml-engine = "3.0.1"   # YamlUtils (gradle-plugin)
+snakeyaml = "2.5"            # config-replacer (runtime yaml)
+mustache = "0.9.14"          # config-replacer (template render)
+
+[libraries]
+
+# main — family-BOM'ы для выравнивания версий (см. .base)
+kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }
+kotlinx-coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+
+micronaut-bom = { module = "io.micronaut:micronaut-core-bom", version.ref = "micronaut" }
+micronaut-kotlin-runtime = { module = "io.micronaut.kotlin:micronaut-kotlin-runtime" }
+micronaut-serde-jackson = { module = "io.micronaut.serde:micronaut-serde-jackson" }
+micronaut-serde-processor = { module = "io.micronaut.serde:micronaut-serde-processor" }
+
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+
+# minecraft (cloud command framework — generic, used by bootstrap)
+cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud" }
+cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud" }
+cloud-kotlin-coroutines = { module = "org.incendo:cloud-kotlin-coroutines", version.ref = "cloud" }
+cloud-kotlin-coroutines-annotations = { module = "org.incendo:cloud-kotlin-coroutines-annotations", version.ref = "cloud" }
+cloud-kotlin-extensions = { module = "org.incendo:cloud-kotlin-extensions", version.ref = "cloud" }
+cloud-paper = { module = "org.incendo:cloud-paper", version = "2.0.0-beta.10" }
