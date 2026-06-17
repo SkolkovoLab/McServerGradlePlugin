@@ -1,8 +1,6 @@
+rootProject.name = "mc-server-kit"
+
 pluginManagement {
-    // Конвенции тулкита подключаются как includeBuild — так его собственные модули
-    // (bootstrap) догфудят опубликованные плагины, а `:gradle-plugin:publish` отдаёт
-    // их наружу. Один источник, без дублирования.
-    includeBuild("gradle-plugin")
     repositories {
         gradlePluginPortal()
         mavenCentral()
@@ -17,10 +15,12 @@ dependencyResolutionManagement {
     }
     // Каталог `libs` Gradle создаёт автоматически из gradle/libs.versions.toml.
 }
-
-rootProject.name = "mc-server-kit"
-
+// gradle-plugin теперь обычный подпроект (а не includeBuild): он только компилирует и
+// публикует конвенции тулкита наружу; внутри сборки их никто не применяет (bootstrap
+// развязан). Внутренние конвенции (.publish) живут в buildSrc.
 include(
+    "bom",
+    "gradle-plugin",
     "config-replacer",
     "bootstrap",
 )

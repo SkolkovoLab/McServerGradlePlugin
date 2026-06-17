@@ -1,9 +1,35 @@
 plugins {
-    id("dev.cherrypizza.mcserver.minecraft")
-    `maven-publish`
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.micronaut.minimal.library)
+    id("dev.cherrypizza.mc-server-kit-publish")
+}
+
+// bootstrap развязан от конвенций тулкита (.minecraft): он не применяется как minecraft-модуль
+// и не несёт run_template. Это обычная Kotlin/Micronaut-библиотека, поэтому стек, который
+// раньше приходил из .base/.kotlin/.java, задаётся здесь напрямую.
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(25) }
+    withSourcesJar()
+}
+
+kotlin {
+    jvmToolchain(25)
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-parameters")
+    }
 }
 
 dependencies {
+    // Стек, ранее приходивший из .base (family-BOM'ы + micronaut + serde/ksp).
+    api(platform(libs.kotlin.bom))
+    api(platform(libs.kotlinx.coroutines.bom))
+    api(platform(libs.micronaut.bom))
+    api(libs.micronaut.kotlin.runtime)
+    api(libs.micronaut.serde.jackson)
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    ksp(libs.micronaut.serde.processor)
+
     // bootstrap трогает только публичный Paper API (Bukkit/adventure/paper-bootstrap),
     // без NMS — поэтому компилируемся против paper-api (compileOnly), БЕЗ paperweight.
     // Потребитель, которому нужен NMS, применяет paperweight на своём уровне (build-logic).
@@ -20,12 +46,7 @@ dependencies {
     api(libs.cloud.kotlin.extensions)
     api(libs.cloud.paper)
 }
-java{
-    withSourcesJar()
-}
 
-// Публикуем код-jar. Companion-артефакт run_template (classifier=run-template) прицепляет
-// convention `.minecraft` автоматически (см. dev.cherrypizza.mcserver.minecraft.gradle.kts).
 publishing {
     publications {
         create<MavenPublication>("maven") {

@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicLong
 
 plugins {
-    id("dev.cherrypizza.mcserver.minecraft")
+    id("dev.cherrypizza.mc-server-kit-minecraft")
     id("de.eldoria.plugin-yml.paper")
     id("com.gradleup.shadow")
 }
@@ -34,14 +34,17 @@ val mcModule = extensions.getByType(MinecraftModuleExtension::class.java)
 // ============================================================
 // Bundle-конструктор (consumer-сторона): сервер собирается из слоёв.
 // ============================================================
-val bundleConfiguration = configurations.create("bundle")
-configurations.named("api") { extendsFrom(bundleConfiguration) }
+// Саму `bundle`-конфигурацию создаёт `.minecraft` (уровень компонуемого слоя) — здесь
+// только используем её для резолва слоёв run_template.
+val bundleConfiguration = configurations["bundle"]
 
-// Дефолтный base (`:bootstrap`) — код + paper.main + слой run_template. Добавляем
-// в afterEvaluate, чтобы прочитать флаг defaultBootstrap из minecraftServer {}.
+// Дефолтный base (`:bootstrap`) — код + paper.main. Добавляем в afterEvaluate, чтобы
+// прочитать флаг defaultBootstrap из minecraftServer {}. BOM тулкита (platform) выравнивает
+// версии его модулей, поэтому bootstrap тянем без явной версии — её даёт BOM (см. :bom).
 afterEvaluate {
     if (serverExt.defaultBootstrap) {
-        dependencies.add("api", "${McServer.GROUP}:bootstrap:${McServer.VERSION}")
+        dependencies.add("api", dependencies.platform("${McServer.GROUP}:mc-server-kit-bom:${McServer.VERSION}"))
+        dependencies.add("api", "${McServer.GROUP}:mc-server-kit-bootstrap")
     }
 }
 
@@ -105,7 +108,7 @@ fun resolveAndStageRunTemplate(notation: String): File? {
 /** Слои в порядке override-приоритета: base → bundles → downloaded → module. */
 fun runTemplateLayers(): List<File> = buildList {
     if (serverExt.useDefaultBase) {
-        resolveAndStageRunTemplate("${McServer.GROUP}:bootstrap:${McServer.VERSION}")?.let { add(it) }
+        resolveAndStageRunTemplate("${McServer.GROUP}:mc-server-kit-bootstrap:${McServer.VERSION}")?.let { add(it) }
     }
     bundleConfiguration.dependencies.forEach { dep ->
         when (dep) {
@@ -184,7 +187,7 @@ fun downloadVerified(url: String, sha: String, dest: File) {
 // config-replacer (maven artifact)
 // ============================================================
 fun resolveConfigReplacerJar(): File {
-    val dep = dependencies.create("${McServer.GROUP}:config-replacer:${McServer.VERSION}")
+    val dep = dependencies.create("${McServer.GROUP}:mc-server-kit-config-replacer:${McServer.VERSION}")
     return configurations.detachedConfiguration(dep).apply { isTransitive = false }.resolve().single()
 }
 

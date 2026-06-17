@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("dev.cherrypizza.mcserver.java")
+    id("dev.cherrypizza.mc-server-kit-java")
     id("org.jetbrains.kotlin.jvm")
 }
 

@@ -1,13 +1,16 @@
+import McServer.VERSION
 import org.gradle.api.Action
 
 /**
- * Координаты и дефолты тулкита. Версия хардкодится здесь и совпадает с версией
- * публикации gradle-plugin; `.server` использует её, чтобы авто-подтянуть
- * `:bootstrap` (база run_template + дефолтный main-класс) и `:config-replacer`.
+ * Координаты и дефолты тулкита. [VERSION] = `project.version` gradle-plugin'а
+ * (генерится в build из конвенции `.publish`, см. [MC_SERVER_VERSION]); `.server`
+ * использует её, чтобы авто-подтянуть `:bootstrap` (база run_template + дефолтный
+ * main-класс) и `:config-replacer`.
  */
 object McServer {
-    const val GROUP = "dev.cherrypizza.mcserver"
-    const val VERSION = "0.1.0"
+    const val GROUP = "dev.cherrypizza"
+    const val VERSION = MC_SERVER_VERSION
+    const val PLATFORM_DEPENDENCY = "$GROUP:mc-server-kit-bom:$VERSION"
 
     const val DEFAULT_PAPER_VERSION = "1.21.11-R0.1-SNAPSHOT"
     const val DEFAULT_SERVER_JAR = "server.jar"

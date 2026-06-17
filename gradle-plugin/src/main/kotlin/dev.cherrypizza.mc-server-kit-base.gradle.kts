@@ -1,7 +1,7 @@
 import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
-    id("dev.cherrypizza.mcserver.kotlin")
+    id("dev.cherrypizza.mc-server-kit-kotlin")
     id("io.micronaut.minimal.library")
     id("com.google.devtools.ksp")
 }

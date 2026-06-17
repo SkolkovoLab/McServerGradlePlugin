@@ -3,7 +3,7 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Zip
 
 plugins {
-    id("dev.cherrypizza.mcserver.base")
+    id("dev.cherrypizza.mc-server-kit-base")
 }
 
 // `.minecraft`-уровневая конфигурация (владелец понятия run_template).
@@ -14,6 +14,16 @@ plugins {
 // Потребитель сам выбирает платформу: paper-api (compileOnly) для plain-плагинов либо
 // paperweight в своей build-logic-конвенции для NMS. См. README тулкита.
 val mcModule = extensions.create("minecraft", MinecraftModuleExtension::class.java)
+
+// ============================================================
+// bundle — компонуемые слои на уровне minecraft-модуля
+// ============================================================
+// Любой minecraft-модуль (бандл или сервер) может объявлять bundle(...): зависимость идёт
+// и в `api` (код подмешивается транзитивно), а consumer-конвенция `.server` использует её
+// для сборки слоёв run_template. Создаётся здесь, чтобы понятие слоя жило на уровне
+// `.minecraft`, а не только у сервера.
+val bundleConfiguration = configurations.create("bundle")
+configurations.named("api") { extendsFrom(bundleConfiguration) }
 
 // ============================================================
 // run_template producer

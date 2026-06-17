@@ -1,7 +1,7 @@
 plugins {
     `java-library`
     id("com.gradleup.shadow") version "9.3.0"
-    `maven-publish`
+    id("dev.cherrypizza.mc-server-kit-publish")
 }
 
 java {
