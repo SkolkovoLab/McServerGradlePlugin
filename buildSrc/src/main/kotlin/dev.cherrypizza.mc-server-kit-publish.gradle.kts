@@ -13,13 +13,12 @@ publishing {
     }
 
     repositories {
-        maven {
-            url = uri(
-                file(
-                    providers.gradleProperty("mcserverPublishRepo")
-                        .getOrElse("/mnt/data/Database/GradlePluginRepository")
-                )
-            )
+        maven("https://repo.cherry.pizza/repository/maven-public-hosted") {
+            name = "cherry"
+            credentials {
+                username = providers.gradleProperty("CHERRY_USERNAME").orNull
+                password = providers.gradleProperty("CHERRY_PASSWORD").orNull
+            }
         }
     }
 }

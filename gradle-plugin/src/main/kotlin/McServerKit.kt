@@ -1,4 +1,4 @@
-import McServer.VERSION
+import McServerKit.VERSION
 import org.gradle.api.Action
 
 /**
@@ -7,7 +7,7 @@ import org.gradle.api.Action
  * использует её, чтобы авто-подтянуть `:bootstrap` (база run_template + дефолтный
  * main-класс) и `:config-replacer`.
  */
-object McServer {
+object McServerKit {
     const val GROUP = "dev.cherrypizza"
     const val VERSION = MC_SERVER_VERSION
     const val PLATFORM_DEPENDENCY = "$GROUP:mc-server-kit-bom:$VERSION"
@@ -37,7 +37,7 @@ open class ServerJarSpec {
     var sha256: String? = null
 
     /** Имя файла server-jar'а в корне run_template (его же читает entrypoint/CMD потребителя). */
-    var fileName: String = McServer.DEFAULT_SERVER_JAR
+    var fileName: String = McServerKit.DEFAULT_SERVER_JAR
 
     /** true → джар уже закоммичен в run_template, скачивать не нужно. */
     var committed: Boolean = false
@@ -75,7 +75,7 @@ open class PluginDownloadSpec {
  * (бандлам), и к серверам.
  *
  * Версия Paper (paperweight dev-bundle) задаётся НЕ здесь, а gradle-property
- * `mcserver.paperVersion` (репо-wide; дефолт [McServer.DEFAULT_PAPER_VERSION]) —
+ * `mcserver.paperVersion` (репо-wide; дефолт [McServerKit.DEFAULT_PAPER_VERSION]) —
  * читать её на этапе объявления зависимости в extension'е нельзя из-за порядка
  * afterEvaluate относительно самого paperweight.
  */
@@ -91,8 +91,8 @@ open class MinecraftServerExtension {
     val serverJar = ServerJarSpec()
     val downloadedPlugins = mutableListOf<PluginDownloadSpec>()
 
-    /** Прогреваемые директории (см. [McServer.DEFAULT_WARM_CACHE]). Добавляй плагин-специфику. */
-    var warmCache: List<String> = McServer.DEFAULT_WARM_CACHE
+    /** Прогреваемые директории (см. [McServerKit.DEFAULT_WARM_CACHE]). Добавляй плагин-специфику. */
+    var warmCache: List<String> = McServerKit.DEFAULT_WARM_CACHE
 
     /** Подмешивать ли базовый слой run_template из `:bootstrap` (companion-артефакт). */
     var useDefaultBase: Boolean = true

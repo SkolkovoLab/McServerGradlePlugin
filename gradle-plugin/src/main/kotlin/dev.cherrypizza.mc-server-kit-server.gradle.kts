@@ -19,8 +19,8 @@ plugins {
 paper {
     name = project.name
     version = rootProject.version.toString()
-    main = McServer.DEFAULT_MAIN
-    bootstrapper = McServer.DEFAULT_BOOTSTRAPPER
+    main = McServerKit.DEFAULT_MAIN
+    bootstrapper = McServerKit.DEFAULT_BOOTSTRAPPER
     generateLibrariesJson = false
     apiVersion = "1.21"
 }
@@ -43,8 +43,8 @@ val bundleConfiguration = configurations["bundle"]
 // версии его модулей, поэтому bootstrap тянем без явной версии — её даёт BOM (см. :bom).
 afterEvaluate {
     if (serverExt.defaultBootstrap) {
-        dependencies.add("api", dependencies.platform("${McServer.GROUP}:mc-server-kit-bom:${McServer.VERSION}"))
-        dependencies.add("api", "${McServer.GROUP}:mc-server-kit-bootstrap")
+        dependencies.add("api", dependencies.platform("${McServerKit.GROUP}:mc-server-kit-bom:${McServerKit.VERSION}"))
+        dependencies.add("api", "${McServerKit.GROUP}:mc-server-kit-bootstrap")
     }
 }
 
@@ -108,7 +108,7 @@ fun resolveAndStageRunTemplate(notation: String): File? {
 /** Слои в порядке override-приоритета: base → bundles → downloaded → module. */
 fun runTemplateLayers(): List<File> = buildList {
     if (serverExt.useDefaultBase) {
-        resolveAndStageRunTemplate("${McServer.GROUP}:mc-server-kit-bootstrap:${McServer.VERSION}")?.let { add(it) }
+        resolveAndStageRunTemplate("${McServerKit.GROUP}:mc-server-kit-bootstrap:${McServerKit.VERSION}")?.let { add(it) }
     }
     bundleConfiguration.dependencies.forEach { dep ->
         when (dep) {
@@ -187,7 +187,7 @@ fun downloadVerified(url: String, sha: String, dest: File) {
 // config-replacer (maven artifact)
 // ============================================================
 fun resolveConfigReplacerJar(): File {
-    val dep = dependencies.create("${McServer.GROUP}:mc-server-kit-config-replacer:${McServer.VERSION}")
+    val dep = dependencies.create("${McServerKit.GROUP}:mc-server-kit-config-replacer:${McServerKit.VERSION}")
     return configurations.detachedConfiguration(dep).apply { isTransitive = false }.resolve().single()
 }
 
