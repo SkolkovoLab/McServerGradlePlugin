@@ -6,6 +6,7 @@ plugins {
 
 java {
     toolchain { languageVersion = JavaLanguageVersion.of(25) }
+    withSourcesJar()
 }
 
 dependencies {
@@ -33,8 +34,8 @@ tasks.named("assemble") { dependsOn(tasks.shadowJar) }
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            artifactId = "config-replacer"
             artifact(tasks.named("shadowJar"))
+            artifact(tasks.named("sourcesJar"))
         }
     }
 }

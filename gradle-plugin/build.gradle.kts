@@ -11,7 +11,9 @@ repositories {
     gradlePluginPortal()
     maven("https://repo.papermc.io/repository/maven-public/")
 }
-
+java {
+    withSourcesJar()
+}
 dependencies {
     // Делает version-catalog accessor (LibrariesForLibs) доступным внутри
     // precompiled-script-плагинов (.base/.minecraft используют `the<LibrariesForLibs>()`).

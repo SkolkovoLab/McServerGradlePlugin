@@ -20,6 +20,9 @@ dependencies {
     api(libs.cloud.kotlin.extensions)
     api(libs.cloud.paper)
 }
+java{
+    withSourcesJar()
+}
 
 // Публикуем код-jar. Companion-артефакт run_template (classifier=run-template) прицепляет
 // convention `.minecraft` автоматически (см. dev.cherrypizza.mcserver.minecraft.gradle.kts).
