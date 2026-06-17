@@ -1,16 +1,27 @@
 import McServerKit.VERSION
+import McServerKit.bootstrapDependency
 import org.gradle.api.Action
+import org.gradle.api.artifacts.Dependency
+import org.gradle.api.artifacts.dsl.DependencyHandler
 
 /**
  * Координаты и дефолты тулкита. [VERSION] = `project.version` gradle-plugin'а
- * (генерится в build из конвенции `.publish`, см. [MC_SERVER_VERSION]); `.server`
- * использует её, чтобы авто-подтянуть `:bootstrap` (база run_template + дефолтный
- * main-класс) и `:config-replacer`.
+ * (генерится в build, см. [MC_SERVER_VERSION]). `:config-replacer` тулкит подтягивает сам;
+ * `:bootstrap` потребитель подключает вручную через [bootstrapDependency] (opt-in).
  */
 object McServerKit {
     const val GROUP = "dev.cherrypizza"
     const val VERSION = MC_SERVER_VERSION
     const val PLATFORM_DEPENDENCY = "$GROUP:mc-server-kit-bom:$VERSION"
+
+    /**
+     * Координата bootstrap-модуля для РУЧНОГО (opt-in) подключения в build.gradle.kts потребителя:
+     * ```
+     * dependencies { api(McServerKit.bootstrapDependency()) }
+     * ```
+     * Автоматически bootstrap больше не подключается. Версия зашита (= версия тулкита), BOM не нужен.
+     */
+    fun DependencyHandler.bootstrapDependency(): Dependency? = add("api", "$GROUP:mc-server-kit-bootstrap:$VERSION")
 
     const val DEFAULT_PAPER_VERSION = "1.21.11-R0.1-SNAPSHOT"
     const val DEFAULT_SERVER_JAR = "server.jar"
@@ -93,12 +104,6 @@ open class MinecraftServerExtension {
 
     /** Прогреваемые директории (см. [McServerKit.DEFAULT_WARM_CACHE]). Добавляй плагин-специфику. */
     var warmCache: List<String> = McServerKit.DEFAULT_WARM_CACHE
-
-    /** Подмешивать ли базовый слой run_template из `:bootstrap` (companion-артефакт). */
-    var useDefaultBase: Boolean = true
-
-    /** Добавлять ли `api(:bootstrap)` + дефолтный `paper.main`. Выключи, если свой main-класс. */
-    var defaultBootstrap: Boolean = true
 
     fun serverJar(action: Action<ServerJarSpec>) = action.execute(serverJar)
 

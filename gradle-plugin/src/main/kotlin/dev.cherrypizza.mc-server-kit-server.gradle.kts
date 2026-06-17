@@ -38,15 +38,8 @@ val mcModule = extensions.getByType(MinecraftModuleExtension::class.java)
 // только используем её для резолва слоёв run_template.
 val bundleConfiguration = configurations["bundle"]
 
-// Дефолтный base (`:bootstrap`) — код + paper.main. Добавляем в afterEvaluate, чтобы
-// прочитать флаг defaultBootstrap из minecraftServer {}. BOM тулкита (platform) выравнивает
-// версии его модулей, поэтому bootstrap тянем без явной версии — её даёт BOM (см. :bom).
-afterEvaluate {
-    if (serverExt.defaultBootstrap) {
-        dependencies.add("api", dependencies.platform("${McServerKit.GROUP}:mc-server-kit-bom:${McServerKit.VERSION}"))
-        dependencies.add("api", "${McServerKit.GROUP}:mc-server-kit-bootstrap")
-    }
-}
+// bootstrap НЕ подключается автоматически — это opt-in. Потребитель добавляет его вручную:
+//   dependencies { api(McServerKit.bootstrapDependency()) }
 
 // ============================================================
 // Конфигурация путей
@@ -105,11 +98,8 @@ fun resolveAndStageRunTemplate(notation: String): File? {
     return dest
 }
 
-/** Слои в порядке override-приоритета: base → bundles → downloaded → module. */
+/** Слои в порядке override-приоритета: bundles → downloaded → module. */
 fun runTemplateLayers(): List<File> = buildList {
-    if (serverExt.useDefaultBase) {
-        resolveAndStageRunTemplate("${McServerKit.GROUP}:mc-server-kit-bootstrap:${McServerKit.VERSION}")?.let { add(it) }
-    }
     bundleConfiguration.dependencies.forEach { dep ->
         when (dep) {
             is ProjectDependency -> {
