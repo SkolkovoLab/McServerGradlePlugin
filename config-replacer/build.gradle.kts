@@ -23,7 +23,7 @@ tasks.jar {
 tasks.shadowJar {
     archiveClassifier.set("")
     manifest {
-        attributes["Main-Class"] = "dev.cherrypizza.mcserver.configreplacer.ConfigReplacerMain"
+        attributes["Main-Class"] = "dev.cherrypizza.mcserverkit.configreplacer.ConfigReplacerMain"
     }
 }
 

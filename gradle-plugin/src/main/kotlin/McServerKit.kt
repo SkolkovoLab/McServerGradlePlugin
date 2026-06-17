@@ -26,8 +26,8 @@ object McServerKit {
     const val DEFAULT_PAPER_VERSION = "1.21.11-R0.1-SNAPSHOT"
     const val DEFAULT_SERVER_JAR = "server.jar"
 
-    const val DEFAULT_MAIN = "dev.cherrypizza.mcserver.bootstrap.MicronautServerPlugin"
-    const val DEFAULT_BOOTSTRAPPER = "dev.cherrypizza.mcserver.bootstrap.MicronautServerBootstrap"
+    const val DEFAULT_MAIN = "dev.cherrypizza.mcserverkit.bootstrap.MicronautServerPlugin"
+    const val DEFAULT_BOOTSTRAPPER = "dev.cherrypizza.mcserverkit.bootstrap.MicronautServerBootstrap"
 
     /**
      * Дефолтный whitelist прогреваемых директорий (то, что Paper качает на старте
@@ -86,7 +86,7 @@ open class PluginDownloadSpec {
  * (бандлам), и к серверам.
  *
  * Версия Paper (paperweight dev-bundle) задаётся НЕ здесь, а gradle-property
- * `mcserver.paperVersion` (репо-wide; дефолт [McServerKit.DEFAULT_PAPER_VERSION]) —
+ * `mcserverkit.paperVersion` (репо-wide; дефолт [McServerKit.DEFAULT_PAPER_VERSION]) —
  * читать её на этапе объявления зависимости в extension'е нельзя из-за порядка
  * afterEvaluate относительно самого paperweight.
  */

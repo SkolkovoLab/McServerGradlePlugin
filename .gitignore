@@ -6,3 +6,4 @@ build/
 *.iml
 run/
 bin/
+.kotlin

@@ -29,8 +29,6 @@ dependencies {
     implementation("org.snakeyaml:snakeyaml-engine:${libs.versions.snakeyaml.engine.get()}")
 }
 
-// McServer.VERSION не хардкодится отдельно: генерируем const из project.version
-// (его задаёт конвенция .publish). Единственная точка правки версии — там.
 val generateMcServerVersion by tasks.registering {
     val outputDir = layout.buildDirectory.dir("generated/sources/mcserver-version/kotlin")
     val pluginVersion = project.version.toString()
