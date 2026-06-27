@@ -71,6 +71,7 @@ val generateMcServerDeps by tasks.registering {
                 internal object McServerDeps {
                     const val KOTLIN_BOM = "org.jetbrains.kotlin:kotlin-bom:$kotlinVersion"
                     const val KOTLINX_COROUTINES_BOM = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:$coroutinesVersion"
+                    const val MICRONAUT_VERSION = "$micronautVersion"
                     const val MICRONAUT_BOM = "io.micronaut:micronaut-core-bom:$micronautVersion"
                     // Версии берутся из micronaut-bom выше — координаты без версии.
                     const val MICRONAUT_KOTLIN_RUNTIME = "io.micronaut.kotlin:micronaut-kotlin-runtime"

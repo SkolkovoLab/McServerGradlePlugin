@@ -23,3 +23,6 @@ dependencies {
 
     ksp(McServerDeps.MICRONAUT_SERDE_PROCESSOR)
 }
+micronaut {
+    version = McServerDeps.MICRONAUT_VERSION
+}
