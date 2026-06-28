@@ -1,7 +1,6 @@
 package dev.cherrypizza.mcserverkit.bootstrap.event
 
 import io.micronaut.context.ApplicationContext
-import io.micronaut.inject.qualifiers.Qualifiers
 import jakarta.annotation.PostConstruct
 import jakarta.inject.Singleton
 import org.bukkit.Bukkit
@@ -15,12 +14,10 @@ class ListenerInitializer(
 ) {
     @PostConstruct
     fun init() {
-        val beans = applicationContext.getBeansOfType(
-            Any::class.java,
-            Qualifiers.byStereotype(EventListenerBean::class.java)
-        )
+        val beans = applicationContext.getBeansOfType(Listener::class.java)
+
         beans.forEach {
-            Bukkit.getPluginManager().registerEvents(it as Listener, javaPlugin)
+            Bukkit.getPluginManager().registerEvents(it, javaPlugin)
         }
     }
 }
