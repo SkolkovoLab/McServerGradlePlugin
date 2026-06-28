@@ -2,11 +2,8 @@
 
 package dev.cherrypizza.mcserverkit.bootstrap.cloud
 
-import dev.cherrypizza.mcserverkit.bootstrap.CloudCommand
 import dev.cherrypizza.mcserverkit.bootstrap.utils.kotlin.formatToPlayer
-import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Bean
-import io.micronaut.inject.qualifiers.Qualifiers
 import jakarta.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import org.bukkit.command.CommandSender
@@ -24,7 +21,6 @@ import org.slf4j.Logger
 
 @Singleton
 class CloudCommandInitializer(
-    private val applicationContext: ApplicationContext,
     private val javaPlugin: JavaPlugin,
     private val scope: CoroutineScope,
     private val logger: Logger,
@@ -91,13 +87,6 @@ class CloudCommandInitializer(
         for (interceptor in interceptors) {
             interceptor.intercept(manager, parser)
         }
-
-        val beans = applicationContext.getBeansOfType(
-            Any::class.java,
-            Qualifiers.byStereotype(CloudCommand::class.java)
-        )
-        parser.parse(beans)
-
 
         return parser
     }
