@@ -4,6 +4,7 @@ package dev.cherrypizza.mcserverkit.bootstrap.cloud
 
 import dev.cherrypizza.mcserverkit.bootstrap.utils.kotlin.formatToPlayer
 import io.micronaut.context.annotation.Bean
+import io.micronaut.context.annotation.Factory
 import jakarta.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import org.bukkit.command.CommandSender
@@ -19,7 +20,7 @@ import org.incendo.cloud.parser.ArgumentParser
 import org.incendo.cloud.parser.ParserDescriptor
 import org.slf4j.Logger
 
-@Singleton
+@Factory
 class CloudCommandInitializer(
     private val javaPlugin: JavaPlugin,
     private val scope: CoroutineScope,
@@ -36,11 +37,11 @@ class CloudCommandInitializer(
             ExecutionCoordinator.simpleCoordinator(),
             SenderMapper.identity()
         )
-
-        if (manager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
+// TODO claude fix this pls
+/*        if (manager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
             // Register Brigadier mappings for rich completions
             manager.registerBrigadier();
-        } else if (manager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+        } else*/ if (manager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             // Use Paper async completions API (see Javadoc for why we don't use this with Brigadier)
             manager.registerAsynchronousCompletions();
         }
@@ -79,7 +80,7 @@ class CloudCommandInitializer(
     fun cloudAnnotationParser(
         manager: LegacyPaperCommandManager<CommandSender>,
         interceptors: List<CloudCommandAnnotationParserInterceptor>
-    ): AnnotationParser<*> {
+    ): AnnotationParser<CommandSender> {
         manager as CommandManager<CommandSender>
         val parser = AnnotationParser(manager, CommandSender::class.java)
             .installCoroutineSupport(scope = scope)

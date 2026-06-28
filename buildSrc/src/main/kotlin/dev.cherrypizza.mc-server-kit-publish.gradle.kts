@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "dev.cherrypizza"
-version = "1.0.2-SNAPSHOT"
+version = "1.0.3-SNAPSHOT"
 
 publishing {
     publications.withType<MavenPublication>().configureEach {

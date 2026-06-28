@@ -7,13 +7,14 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.event.StartupEvent
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.runtime.event.annotation.EventListener
+import org.bukkit.command.CommandSender
 import org.incendo.cloud.annotations.AnnotationParser
 import javax.inject.Singleton
 
 @Singleton
 class CloudCommandParser(
     private val context: ApplicationContext,
-    private val parser: AnnotationParser<*>,
+    private val parser: AnnotationParser<CommandSender>,
 ) {
     @EventListener
     fun run(event: StartupEvent) {
