@@ -9,6 +9,7 @@ plugins {
     id("dev.cherrypizza.mc-server-kit-minecraft")
     id("de.eldoria.plugin-yml.paper")
     id("com.gradleup.shadow")
+    `java`
 }
 
 // ============================================================
@@ -37,9 +38,6 @@ val mcModule = extensions.getByType(MinecraftModuleExtension::class.java)
 // Саму `bundle`-конфигурацию создаёт `.minecraft` (уровень компонуемого слоя) — здесь
 // только используем её для резолва слоёв run_template.
 val bundleConfiguration = configurations["bundle"]
-
-// bootstrap НЕ подключается автоматически — это opt-in. Потребитель добавляет его вручную:
-//   dependencies { api(McServerKit.bootstrapDependency()) }
 
 // ============================================================
 // Конфигурация путей

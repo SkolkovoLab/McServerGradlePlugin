@@ -1,9 +1,5 @@
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.bundling.Zip
-
 plugins {
-    id("dev.cherrypizza.mc-server-kit-base")
+    `java-library`
 }
 
 // `.minecraft`-уровневая конфигурация (владелец понятия run_template).

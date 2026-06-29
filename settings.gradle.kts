@@ -19,8 +19,6 @@ dependencyResolutionManagement {
 // публикует конвенции тулкита наружу; внутри сборки их никто не применяет (bootstrap
 // развязан). Внутренние конвенции (.publish) живут в buildSrc.
 include(
-    "bom",
     "gradle-plugin",
     "config-replacer",
-    "bootstrap",
 )

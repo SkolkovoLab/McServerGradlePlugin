@@ -14,14 +14,7 @@ java {
 }
 
 dependencies {
-    // ВАЖНО: версии-каталог потребителя (LibrariesForLibs) здесь НЕ прокидываем в
-    // precompiled-script-плагины. Конвенция `.base` публикуется наружу и не должна
-    // зависеть от чужого libs.versions.toml — координаты вшиваются через McServerDeps
-    // (см. generateMcServerDeps ниже).
-
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.get()}")
-    implementation("io.micronaut.gradle:micronaut-minimal-plugin:${libs.versions.micronaut.plugin.get()}")
-    implementation("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:${libs.versions.ksp.get()}")
     implementation("de.eldoria.plugin-yml.paper:de.eldoria.plugin-yml.paper.gradle.plugin:${libs.versions.plugin.yml.get()}")
     implementation("com.gradleup.shadow:com.gradleup.shadow.gradle.plugin:${libs.versions.shadow.get()}")
     // paperweight НЕ тянем: платформа (paper-api / paperweight) — уровень потребителя.
@@ -53,11 +46,8 @@ val generateMcServerDeps by tasks.registering {
     val outputDir = layout.buildDirectory.dir("generated/sources/mcserver-deps/kotlin")
     val kotlinVersion = libs.versions.kotlin.get()
     val coroutinesVersion = libs.versions.kotlinx.coroutines.get()
-    // `micronaut` соседствует с `micronaut-plugin`, поэтому листовая версия — через asProvider().
-    val micronautVersion = libs.versions.micronaut.asProvider().get()
     inputs.property("kotlin", kotlinVersion)
     inputs.property("coroutines", coroutinesVersion)
-    inputs.property("micronaut", micronautVersion)
     outputs.dir(outputDir)
     doLast {
         outputDir.get().file("McServerDeps.kt").asFile.apply {
@@ -71,12 +61,6 @@ val generateMcServerDeps by tasks.registering {
                 internal object McServerDeps {
                     const val KOTLIN_BOM = "org.jetbrains.kotlin:kotlin-bom:$kotlinVersion"
                     const val KOTLINX_COROUTINES_BOM = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:$coroutinesVersion"
-                    const val MICRONAUT_VERSION = "$micronautVersion"
-                    const val MICRONAUT_BOM = "io.micronaut:micronaut-core-bom:$micronautVersion"
-                    // Версии берутся из micronaut-bom выше — координаты без версии.
-                    const val MICRONAUT_KOTLIN_RUNTIME = "io.micronaut.kotlin:micronaut-kotlin-runtime"
-                    const val MICRONAUT_SERDE_JACKSON = "io.micronaut.serde:micronaut-serde-jackson"
-                    const val MICRONAUT_SERDE_PROCESSOR = "io.micronaut.serde:micronaut-serde-processor"
                     const val JACKSON_DATATYPE_JSR310 = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
                 }
                 """.trimIndent() + "\n"
